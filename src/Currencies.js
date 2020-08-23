@@ -7,11 +7,9 @@ const Coin = ({ value }) => {
   return <Grid item>{value}</Grid>;
 };
 
-const Currencies = ({ list }) => {
-  const [currencies, setCurrencies] = React.useState(list);
-
+const Currencies = ({ list, setCurrencies }) => {
   function updateFavorite(country) {
-    const item = currencies.find((coin) => coin.country === country);
+    const item = list.find((coin) => coin.country === country);
     const newItem = { ...item, favorite: !item.favorite };
 
     setCurrencies((prevState) =>
@@ -21,8 +19,8 @@ const Currencies = ({ list }) => {
 
   return (
     <>
-      {currencies.map((coin) => (
-        <Grid container justify="space-around" spacing={3}>
+      {list.map((coin) => (
+        <Grid container key={coin.country} justify="space-around" spacing={3}>
           <Coin value={coin.country} />
           <Coin value={coin.value} />
           <Coin value={coin.code} />
@@ -37,7 +35,6 @@ const Currencies = ({ list }) => {
           </Grid>
         </Grid>
       ))}
-      ;
     </>
   );
 };
