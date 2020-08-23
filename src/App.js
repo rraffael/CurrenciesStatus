@@ -1,12 +1,10 @@
 import React from "react";
-import { Typography, Button, ButtonGroup, makeStyles } from "@material-ui/core";
+import { Typography, Button, makeStyles } from "@material-ui/core";
 import Currencies from "./Currencies";
 
-const useStyles = makeStyles((theme) => ({
-  margin: {
-    "& > *": {
-      margin: 50
-    }
+const useStyles = makeStyles(() => ({
+  favoriteButton: {
+    marginBottom: "15px"
   }
 }));
 
@@ -20,22 +18,31 @@ const money = [
 export default function App() {
   const classes = useStyles();
 
+  const [currencies, setCurrencies] = React.useState(money);
+  const [isFavorite, setIsFavorite] = React.useState(false);
+
+  function onlyFavorites(currency) {
+    return currency.favorite;
+  }
+
   return (
     <>
       <Typography component="h1" variant="h2" align="center" gutterBottom>
         Currency
       </Typography>
-      <ButtonGroup
-        className={classes.margin}
+      <Button
         color="secondary"
-        variant="text"
-        size="large"
+        variant="outlined"
+        className={classes.favoriteButton}
         fullWidth
+        onClick={() => setIsFavorite(!isFavorite)}
       >
-        <Button>All</Button>
-        <Button>Favorites</Button>
-      </ButtonGroup>
-      <Currencies list={money} />
+        {isFavorite ? "All" : "Favorites"}
+      </Button>
+      <Currencies
+        list={isFavorite ? currencies.filter(onlyFavorites) : currencies}
+        setCurrencies={setCurrencies}
+      />
     </>
   );
 }
